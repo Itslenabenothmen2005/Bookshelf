@@ -1,6 +1,14 @@
+import java.util.Properties // AJOUT : doit être la toute première ligne
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+}
+
+// AJOUT : lit local.properties (la clé n'est donc jamais dans Git)
+val localProperties = Properties().apply {
+    val file = rootProject.file("local.properties")
+    if (file.exists()) file.inputStream().use { load(it) }
 }
 
 android {
@@ -17,6 +25,13 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // AJOUT : expose la clé au code Kotlin via BuildConfig.BOOKS_API_KEY
+        buildConfigField(
+            "String",
+            "BOOKS_API_KEY",
+            "\"${localProperties.getProperty("BOOKS_API_KEY", "")}\""
+        )
     }
 
     buildTypes {
@@ -32,6 +47,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true // AJOUT : génère la classe BuildConfig
     }
 }
 
