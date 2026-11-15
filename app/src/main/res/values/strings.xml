@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Bookshelf</string>
+    <string name="loading">Chargement…</string>
+    <string name="loading_failed">Échec du chargement</string>
+    <string name="retry">Réessayer</string>
 </resources>
